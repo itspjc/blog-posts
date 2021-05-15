@@ -1,0 +1,71 @@
+services:
+  fastapi:
+    build: .
+    restart: always
+    expose:
+      - "80"
+    labels:
+      - traefik.enable=true
+      # Docker내 어플리케이션 서버가 다르다면 포트변경 필요
+      - traefik.http.services.app.loadbalancer.server.port=80
+      - traefik.http.routers.app-http.entrypoints=http
+      # 자신의 Subdomain으로 변경필요
+      - traefik.http.routers.app-http.rule=Host(`fastapi.mydomain.com`)
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.app-https.entrypoints=https
+      # 자신의 Subdomain으로 변경필요
+      - traefik.http.routers.app-https.rule=Host(`fastapi.mydomain.com`)
+      - traefik.http.routers.app-https.tls=true
+      - traefik.http.routers.app-https.tls.certresolver=le
+      - traefik.http.middlewares.https-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.https-redirect.redirectscheme.permanent=true
+      - traefik.http.routers.app-http.middlewares=https-redirect
+    networks:
+      - traefik-public
+  webserver:
+    image: nginx
+    expose:
+      - "80"
+    labels:
+      - traefik.enable=true
+      # Docker내 어플리케이션 서버가 다르다면 포트변경 필요
+      - traefik.http.services.app2.loadbalancer.server.port=80
+      - traefik.http.routers.app2-http.entrypoints=http
+      # 자신의 Subdomain으로 변경필요
+      - traefik.http.routers.app2-http.rule=Host(`webserver.mydomain.com`)
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.app2-https.entrypoints=https
+      # 자신의 Subdomain으로 변경필요
+      - traefik.http.routers.app2-https.rule=Host(`webserver.mydomain.com`)
+      - traefik.http.routers.app2-https.tls=true
+      - traefik.http.routers.app2-https.tls.certresolver=le
+      - traefik.http.middlewares.https-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.https-redirect.redirectscheme.permanent=true
+      - traefik.http.routers.app2-http.middlewares=https-redirect
+    networks:
+      - traefik-public
+  filebrowser:
+    image: filebrowser/filebrowser
+    expose:
+      - 80
+    labels:
+      - traefik.enable=true
+      # Docker내 어플리케이션 서버가 다르다면 포트변경 필요. (현재 filebrowser는 80으로 서비스된다)
+      - traefik.http.services.app3.loadbalancer.server.port=80
+      - traefik.http.routers.app3-http.entrypoints=http
+      # 자신의 Subdomain으로 변경필요
+      - traefik.http.routers.app3-http.rule=Host(`filebrowser.mydomain.com`)
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.app3-https.entrypoints=https
+      # 자신의 Subdomain으로 변경필요
+      - traefik.http.routers.app3-https.rule=Host(`filebrowser.mydomain.com`)
+      - traefik.http.routers.app3-https.tls=true
+      - traefik.http.routers.app3-https.tls.certresolver=le
+      - traefik.http.middlewares.https-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.https-redirect.redirectscheme.permanent=true
+      - traefik.http.routers.app3-http.middlewares=https-redirect
+    networks:
+      - traefik-public
+networks:
+  traefik-public:
+    external: true
