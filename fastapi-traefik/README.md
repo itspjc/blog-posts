@@ -26,7 +26,7 @@ Nginx, Apache 같은 웹서버에 인증서를 넣어서 HTTPS를 구축해본 �
 
 - Subdomains
   - **fastapi.mydomain.com**: Fast API 서버 (Rest API)
-  - webserver.mydomain.com: Nginx 로 만든 간단한 서버
+  - **webserver.mydomain.com**: Nginx 로 만든 간단한 서버
   - **filebrowser.mydomain.com**: 오픈소스인 웹 기반 Filebrowser로 서버 내의 파일들의 업로드/다운로드/수정 등이 가능하다. 
 
 - **Traefik**이 앞단의 Reverse Proxy 역할을 하게 되고 인터넷으로부터 요청을 받으면 Router 규칙에 따라서 인터넷 요청을 각 서비스로 분배하게 된다.
@@ -35,7 +35,11 @@ Nginx, Apache 같은 웹서버에 인증서를 넣어서 HTTPS를 구축해본 �
 
 
 
+<<<<<<< HEAD:fastapi-traefik/README.md
 ![](images/image1.png)
+=======
+![](img/1.png)
+>>>>>>> 0e8df569d7d57394312754605161027b21742ea1:README.md
 
 
 
@@ -44,8 +48,10 @@ Nginx, Apache 같은 웹서버에 인증서를 넣어서 HTTPS를 구축해본 �
 구축한 서버환경은 다음과 같다.
 
 - Google Compute Engine (Ubuntu 20.04)
+
 - Docker & Docker compose 이 설치된 상태
-- 
+
+  
 
 #### 간단한 FastAPI 어플리케이션 만들기
 
@@ -203,17 +209,50 @@ networks:
 ### Run
 
 먼저 Docker 네트워크를 만들어주자.
+<<<<<<< HEAD:fastapi-traefik/README.md
 
 ```
 docker network create traefik-public
 ```
 
 그다음 서비스들을 올려주자.
+=======
+>>>>>>> 0e8df569d7d57394312754605161027b21742ea1:README.md
+
+```
+docker network create traefik-public
+```
+
+<<<<<<< HEAD:fastapi-traefik/README.md
+
+
+### Test
+
+모든 서비스들이 정상적으로 잘 올라갔는지 확인해본다. 우리가 띄운 3개 + traefik 의 Dashboard 가 인증서 문제없이 잘 접속되면 된다. **https://**로 접속해야 함을 잊지 말자.
+
+=======
+그다음 서비스들을 올려주자.
 
 ```
 docker-compose -f docker-compose.traefik.yml up -d
 docker-compose -f docker-compose.apps.yml up -d
+>>>>>>> 0e8df569d7d57394312754605161027b21742ea1:README.md
 ```
+https://fastapi.mydomain.com
+https://webserver.mydomain.com
+https://filebrowser.mydomain.com # ID/PW: admin/admin
+httsp://dashboard.mydomain.com # Traefik Dashboard
+```
+
+
+
+### 마치며
+
+Fast API의 개발자의 Github 코드를 보면 Basic HTTP Auth를 하는 등 (브라우저에서 아이디, 패스워드로 로그인이 필요함) 나에게는 직접적으로 필요가 없는 부분은 없앴다. 본 예제에서는 Traefik Dashboard까지 Basic Auth 기능을 없앴지만 이 Dashboard는 관리자만 들어가야 하니 원래는 Basic Auth 를 넣는게 좋을 듯 하다. 이건 위에서 공유한 개발자의 블로그를 보고 따라해 보시길... 
+
+자신의 Fast API이 잘 Dockerize 되어잇고, 도메인만 있다면, Traefik을 통해 Let's Encrypt 로 인증서 발급까지 자동으로 되니 정말 편한 Deploy manifest 파일들을 구성해볼 수 있는 좋은 기회였다. 위에서 소개한 소스코드는 여기에서 제공받을 수 있다. 나의 경우와 같이 Fast API로 HTTPS 서비스를 검토하시는 분들께 많은 도움이 되셨길 바란다.
+
+
 
 
 
@@ -235,20 +274,6 @@ httsp://dashboard.mydomain.com # Traefik Dashboard
 Fast API의 개발자의 Github 코드를 보면 Basic HTTP Auth를 하는 등 (브라우저에서 아이디, 패스워드로 로그인이 필요함) 나에게는 직접적으로 필요가 없는 부분은 없앴다. 본 예제에서는 Traefik Dashboard까지 Basic Auth 기능을 없앴지만 이 Dashboard는 관리자만 들어가야 하니 원래는 Basic Auth 를 넣는게 좋을 듯 하다. 이건 위에서 공유한 개발자의 블로그를 보고 따라해 보시길... 
 
 자신의 Fast API이 잘 Dockerize 되어잇고, 도메인만 있다면, Traefik을 통해 Let's Encrypt 로 인증서 발급까지 자동으로 되니 정말 편한 Deploy manifest 파일들을 구성해볼 수 있는 좋은 기회였다. 위에서 소개한 소스코드는 여기에서 제공받을 수 있다. 나의 경우와 같이 Fast API로 HTTPS 서비스를 검토하시는 분들께 많은 도움이 되셨길 바란다.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
