@@ -1,3 +1,5 @@
+#/bin/bash
+
 # https://cloud.google.com/storage/docs/gsutil_install#deb
 
 echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
